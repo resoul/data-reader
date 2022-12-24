@@ -1,0 +1,17 @@
+{
+  "name": "resoul/data-reader",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "resoul",
+      "email": "roberts.mark1985@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "DataReader\\": "src/"
+    }
+  }
+}
