@@ -3,7 +3,6 @@ namespace DataReader;
 
 interface DataReaderInterface
 {
-    public function getItems();
-
-    public function getTotalItems();
+    public function getItems(): array;
+    public function getTotalItems(): int;
 }

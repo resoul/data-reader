@@ -6,13 +6,41 @@ use DataReader\ResourceInterface;
 
 class ArrayData extends Resource implements ResourceInterface
 {
-    function setData($data)
+    private array $rawData;
+
+    public function __construct(array $data = [])
     {
-        // TODO: Implement setData() method.
+        $this->rawData = $data;
+    }
+
+    public function setData($data)
+    {
+        $this->data = $data;
     }
 
     public function apply(ConfigInterface $config)
     {
-        // TODO: Implement apply() method.
+        $items = [];
+        $isFirst = true;
+
+        foreach ($this->rawData as $item) {
+            if ($isFirst) {
+                $firstItem = $config->configureFirstItem($item);
+                if ($firstItem !== false) {
+                    $items[] = $firstItem;
+                }
+                $isFirst = false;
+            } else {
+                $items[] = $config->configureItem($item);
+            }
+        }
+
+        $this->setData($items);
+        return $this->getData();
+    }
+
+    public function getData()
+    {
+        return $this->data;
     }
 }

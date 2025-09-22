@@ -1,6 +1,11 @@
 <?php
 namespace DataReader;
 
+use DataReader\Exception\ConfigurationException;
+use DataReader\Exception\DataReaderException;
+use DataReader\Exception\OutputException;
+use DataReader\Exception\ResourceException;
+
 class Reader implements DataReaderInterface
 {
     /**
@@ -42,18 +47,38 @@ class Reader implements DataReaderInterface
 
     public function run()
     {
-        $items = $this->resource->apply($this->config);
-        $this->output->items($items);
+        if (!$this->resource) {
+            throw new ResourceException('Resource is required');
+        }
 
-        return $items;
+        if (!$this->config) {
+            throw new ConfigurationException('Configuration is required');
+        }
+
+        if (!$this->output) {
+            throw new OutputException('Output handler is required');
+        }
+
+        try {
+            $items = $this->resource->apply($this->config);
+            return $this->output->items($items);
+        } catch (\Exception $e) {
+            throw new DataReaderException('Error during data processing: ' . $e->getMessage(), 0, $e);
+        }
     }
 
-    public function getItems()
+    public function getItems(): array
     {
+        if (!$this->resource) {
+            throw new \RuntimeException('Resource not set');
+        }
+
+        return $this->resource->apply($this->config);
     }
 
-    public function getTotalItems()
+    public function getTotalItems(): int
     {
-        // TODO: Implement getTotalItems() method.
+        $items = $this->getItems();
+        return is_array($items) ? count($items) : 0;
     }
 }

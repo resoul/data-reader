@@ -13,5 +13,9 @@
     "psr-4": {
       "DataReader\\": "src/"
     }
+  },
+  "require": {
+    "ext-json": "*",
+    "ext-simplexml": "*"
   }
 }
