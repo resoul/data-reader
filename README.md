@@ -1,5 +1,3 @@
-## Advanced Usage
-
 ### Data Validation and Filtering
 
 ```php
